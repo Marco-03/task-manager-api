@@ -38,7 +38,7 @@ export default function TaskList() {
     }
 
     fetchTasks();
-  }, []);
+  }, [navigate, fetchTasks]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
