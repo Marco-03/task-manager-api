@@ -1,26 +1,23 @@
-# app.py
 from flask import Flask
 from flask_cors import CORS
-from extensions import db, jwt  # importă din extensions
+from extensions import db, jwt
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
+
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 
 db.init_app(app)
 jwt.init_app(app)
 CORS(app)
 
-# Import modelul după ce ai configurat `db`
-from models import User
 
 with app.app_context():
     db.create_all()
-
-
-@app.route("/")
-def hello():
-    return {"msg": "Backend is running"}
 
 from routes import *
 

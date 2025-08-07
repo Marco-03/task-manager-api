@@ -30,9 +30,9 @@ def signup():
 
 @app.route('/login', methods=['POST'])
 def login():
-    date = request.get_json()
-    username = date.get('username')
-    password = date.get('password')
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
 
     if not username or not password:
         return jsonify({"error": "Username and password are required."}), 400
