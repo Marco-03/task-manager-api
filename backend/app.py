@@ -13,7 +13,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 
 db.init_app(app)
 jwt.init_app(app)
-CORS(app)
+CORS(app, origins=["http://localhost:3000", "https://task-manager-api-lbva.onrender.com"])
 
 
 with app.app_context():
