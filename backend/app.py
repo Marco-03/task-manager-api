@@ -1,3 +1,4 @@
+# app.py
 from flask import Flask
 from flask_cors import CORS
 from extensions import db, jwt
@@ -9,12 +10,16 @@ load_dotenv()
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+
+# Use in-memory DB for testing in CI if TESTING env var is set
+if os.getenv("TESTING") == "1":
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 
 db.init_app(app)
 jwt.init_app(app)
 CORS(app, origins=["http://localhost:3000", "https://task-manager-api-lbva.onrender.com"])
-
 
 with app.app_context():
     db.create_all()
